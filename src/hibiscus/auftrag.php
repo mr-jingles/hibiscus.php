@@ -21,7 +21,7 @@ class auftrag
    * @var ID des Kontos in der Datenbank.
    */
   public $id               = null;
-  
+
   /**
    * @var ID des zugeordneten Kontos.
    */
@@ -31,17 +31,17 @@ class auftrag
    * @var Bankleitzahl des Gegenkontos
    */
   public $blz              = null;
-  
+
   /**
    * @var Kontonummer des Gegenkontos
    */
   public $kontonummer      = null;
-  
+
   /**
    * @var Inhaber-Name des Gegenkontos
    */
   public $name             = null;
-  
+
   /**
    * @var Betrag des Auftrages im Format "0,00"
    */
@@ -53,17 +53,17 @@ class auftrag
    * Zeilen Verwendungszweck hinzuzufuegen.
    */
   public $verwendungszweck = array();
-  
+
   /**
-   * @var Text-Schlüssel (Auftragsart)
-   * 
-   * Mögliche Werte:
+   * @var Text-Schlï¿½ssel (Auftragsart)
+   *
+   * Mï¿½gliche Werte:
    *   - 04    Lastschrift - Abbuchungsverfahren
-   *   - 05    Lastschrift - Einzugsermächtigung
-   *   - 51    Überweisung (muss nicht explizit angegeben werden)
-   *   - 53    Überweisung - Lohn/Gehalt/Rente
-   *   - 54    Überweisung - Vermögenswirksame Leistungen
-   *   - 59    Überweisung Rücküberweisung
+   *   - 05    Lastschrift - Einzugsermï¿½chtigung
+   *   - 51    ï¿½berweisung (muss nicht explizit angegeben werden)
+   *   - 53    ï¿½berweisung - Lohn/Gehalt/Rente
+   *   - 54    ï¿½berweisung - Vermï¿½genswirksame Leistungen
+   *   - 59    ï¿½berweisung Rï¿½ckï¿½berweisung
    */
   public $textschluessel 	 = null;
 
@@ -71,7 +71,7 @@ class auftrag
    * @var Auftragsstatus (true/false)
    */
   public $ausgefuehrt      = null;
-  
+
   /**
    * Fuegt eine Zeile Verwendungszweck hinzu.
    * @param line die zusaetzliche Zeile Verwendungszweck.
@@ -80,30 +80,30 @@ class auftrag
   {
     array_push($this->verwendungszweck,$line);
   }
-  
+
   /**
    * Die optionale End2End-ID fuer SEPA.
    */
    public $endtoendid= null;
-   
+
    /**
     * Die Mandats-ID.
     */
    public $mandateid= null;
-   
+
    /**
     * Die Glaeubiger-ID.
     */
    public $creditorid= null;
-   
+
    /**
     * Das Datum der Unterschrift des Mandats.
     */
    public $sigdate= null;
-   
+
 
    /**
-    * Sequenz-Typ: 
+    * Sequenz-Typ:
     * FRST fuer Erst-Einzug.
     * RCUR fuer Folge-Einzug.
     * OOFF fuer Einmal-Einzug.
@@ -115,27 +115,28 @@ class auftrag
     * Basis-Lastschrift
     *   CORE("LastSEPA","Basis-Lastschrift"),
     * Basis-Lastschrift mit verkuerztem Vorlauf.
-    *   COR1("LastCOR1SEPA","Basis-Lastschrift (kurzer Vorlauf)"),     
+    *   COR1("LastCOR1SEPA","Basis-Lastschrift (kurzer Vorlauf)"),
     * B2B-Lastschrift
     *   B2B("LastB2BSEPA","B2B-Lastschrift")
     */
    public $sepatype= null;
 
-   
+
    /**
     * Das Ziel-Ausfuehrungsdatum bei der Bank.
     */
    public $targetdate= null;
-   
-   
+
+
    public $termin=null;
-   
+
    /**
-    * 
-    * @var $buchungen enthält die einzelBuchungen bei Sammelaufträgen
+    *
+    * @var $buchungen enthï¿½lt die einzelBuchungen bei Sammelauftrï¿½gen
     */
    public $buchungen=null;
-  
+
+   public $terminueberweisung=null;
 
 }
 

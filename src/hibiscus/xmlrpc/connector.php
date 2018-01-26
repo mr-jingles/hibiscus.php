@@ -31,11 +31,11 @@ class connector implements \hibiscus\iconnector
    *  2 = Debug-Ausgaben, Level 2
    */
   public static $DEBUG = 0;
-  
+
   /**
    * Legt fest, ob das SSL-Zertifikate des Payment-Servers
-   * geprueft werden soll. Wenn "1" angegeben ist, müssen Sie vorher das
-   * SSL-Zertifikat des Payment-Servers exportieren in Curl (Curl wird von PHP intern für
+   * geprueft werden soll. Wenn "1" angegeben ist, mï¿½ssen Sie vorher das
+   * SSL-Zertifikat des Payment-Servers exportieren in Curl (Curl wird von PHP intern fï¿½r
    * HTTP-Kommunikation verwendet) importieren.
    *
    * Oeffnen Sie hierzu das Webfrontend des Payment-Servers ueber https://<server>:8080/webadmin
@@ -45,19 +45,19 @@ class connector implements \hibiscus\iconnector
    * Beispiel Firefox:
    *  Wenn Sie das Webfrontend noch nie im Browser geoeffnet haben, wird ein Warnhinweis
    *  angezeigt. Klicken Sie auf
-   *  "Ich kenne das Risiko->Ausnahmen hinzufuegen...->Sicherheits-Ausnahmeregel bestätigen".
+   *  "Ich kenne das Risiko->Ausnahmen hinzufuegen...->Sicherheits-Ausnahmeregel bestï¿½tigen".
    *
    *  Geben Sie als Username "admin" und als Passwort Ihr Master-Passwort ein.
    *  Waehlen Sie im Menu "Extras->Seiteninformationen->Sicherheit->Zertifikat anzeigen->Details".
    *  Klicken Sie auf "Exportieren...", um das Zertifikat zu speichern.
-   *  
+   *
    * Konvertieren Sie das Zertifikat in das Textformat:
    * "openssl x509 -inform PEM -in <datei> -out out.pem -text"
    *
    * Fuegen Sie den Inhalt der Datei out.pem anschliessend zu folgender Datei hinzu:
    * "/usr/share/curl/curl-ca-bundle.crt"
    *
-   * Verwenden Sie alternativ "0", wenn das Zertifikat nicht geprüft werden soll.
+   * Verwenden Sie alternativ "0", wenn das Zertifikat nicht geprï¿½ft werden soll.
    */
   public static $SSL_VERIFY  = 0;
 
@@ -73,7 +73,7 @@ class connector implements \hibiscus\iconnector
   {
 	  $GLOBALS['xmlrpc_null_extension']       = true;
     $GLOBALS['xmlrpc_null_apache_encoding'] = true;
-    
+
     $this->client = new \xmlrpc_client("https://admin:".$password."@".$server.":".$port."/xmlrpc/");
     $this->client->setDebug(\hibiscus\xmlrpc\connector::$DEBUG);
     $this->client->setSSLVerifyHost(\hibiscus\xmlrpc\connector::$SSL_VERIFY);
@@ -132,7 +132,7 @@ class connector implements \hibiscus\iconnector
   {
     $value = $this->send("hibiscus.xmlrpc.".$typ.".create",array(new \xmlrpcval($this->createParams($auftrag),"struct")));
     $result = $value->scalarVal();
-    
+
     // Moegliche Faelle:
     // a) xmlrpc.supports.null = true:   (DEFAULT)
     //    a1) OK     = return NULL
@@ -140,38 +140,38 @@ class connector implements \hibiscus\iconnector
     // b) xmlrpc.supports.null = false:
     //    b1) OK     = return ID
     //    b2) FEHLER = throws Exception
-    
+
     if ($result == null) // a1)
       return;
-      
-    if (preg_match("/^[0-9]{1,9}$/",$result)) 
+
+    if (preg_match("/^[0-9]{1,9}$/",$result))
     {
       $auftrag->id = $result; // b1)
       return;
     }
-    
+
     throw new \Exception($result); // a2)
-    
+
     // b2) muss nicht behandelt werden - fliegt durch
   }
-  
-  
+
+
   /**
    * @see hibiscus.iconnector::createSammelAuftrag()
    */
   public function createSammelAuftrag($typ,$auftragname,  $auftraege)
   {
   	$filter=array("kontonummer","name","blz","betrag","endtoendid","creditorid","mandateid","sigdate","verwendungszweck");
-  	
+
   	$auftragsarray=array();
   	foreach($auftraege as $auftrag)
   	{
   		$auftragsarray[]=new \xmlrpcval($this->createFilteredParams($auftrag, $filter),"struct");
-  	}	
-  	
-  	
+  	}
+
+
   	$filter=array("konto","sequencetype","sepatype","targetdate","termin");
-  	
+
   	$parameter=$this->createFilteredParams($auftraege[0], $filter);
   	$parameter["name"]=new \xmlrpcval($auftragname,"string");
   	$parameter["buchungen"] = new \xmlrpcval($auftragsarray,"array");
@@ -179,7 +179,7 @@ class connector implements \hibiscus\iconnector
   	echo __FILE__." ".__LINE__."<br />\n";
   	$value = $this->send("hibiscus.xmlrpc.".$typ.".create",array($params));
   	$result = $value->scalarVal();
-  	
+
   	// Moegliche Faelle:
   	// a) xmlrpc.supports.null = true:   (DEFAULT)
   	//    a1) OK     = return NULL
@@ -187,23 +187,23 @@ class connector implements \hibiscus\iconnector
   	// b) xmlrpc.supports.null = false:
   	//    b1) OK     = return ID
   	//    b2) FEHLER = throws Exception
-  	
+
   	if ($result == null) // a1)
   		return;
-  	
+
   	if (preg_match("/^[0-9]{1,9}$/",$result))
   	{
   		//$auftrag->id = $result; // b1)
   		return $result;
   	}
-  	
+
   	throw new \Exception($result); // a2)
-  	
+
   	// b2) muss nicht behandelt werden - fliegt durch
   }
-  
-  
-  
+
+
+
   /**
    * @see hibiscus.iconnector::checkCRC()
    */
@@ -212,7 +212,7 @@ class connector implements \hibiscus\iconnector
     $value = $this->send("hibiscus.xmlrpc.konto.checkAccountCRC",array(new \xmlrpcval($blz,"string"),new \xmlrpcval($kontonummer,"string")));
     return $value->scalarVal();
   }
-    
+
   /**
    * @see hibiscus.iconnector::getBankname()
    */
@@ -221,7 +221,7 @@ class connector implements \hibiscus\iconnector
     $value = $this->send("hibiscus.xmlrpc.konto.getBankname",array(new \xmlrpcval($blz,"string")));
     return $value->scalarVal();
   }
-  
+
   /**
    * Fuehrt den XML-RPC-Aufruf aus.
    * @param $method Name der XML-RPC-Funktion.
@@ -233,10 +233,10 @@ class connector implements \hibiscus\iconnector
     $response = $this->client->send($msg);
     if ($response->faultCode())
       throw new \Exception($response->faultString());
-    
+
     return $response->value();
   }
-  
+
   /**
    * Erzeugt die Bean und uebernimmt die Properties des XML-RPC-Response.
    * @param $class die Klasse der Bean.
@@ -247,7 +247,7 @@ class connector implements \hibiscus\iconnector
   {
     $class = "\\hibiscus\\xmlrpc\\".$class; // Namespace noch davor schreiben
     $bean = new $class();
-    
+
     while (list($key, $value) = $xmlrpc->structEach())
     {
       // Checken, ob ein Setter existiert
@@ -259,7 +259,7 @@ class connector implements \hibiscus\iconnector
     }
     return $bean;
   }
-  
+
   /**
    * Erzeugt das XML-RPC-Parameter-Set fuer die Bean.
    * @param $bean die Bean, fuer die XML-RPC-Parameter erstellt werden sollen.
@@ -268,7 +268,7 @@ class connector implements \hibiscus\iconnector
   {
     $params = array();
     $props = get_object_vars($bean);
-    
+
     foreach($props as $key => $value)
     {
       $method = "get".ucfirst($key);
@@ -279,23 +279,23 @@ class connector implements \hibiscus\iconnector
     }
     return $params;
   }
-  
-  
-  
+
+
+
   /**
    * Erzeugt das XML-RPC-Parameter-Set fuer die Bean.
    * @param $bean die Bean, fuer die XML-RPC-Parameter erstellt werden sollen.
-   * @param $filter Array mit werten die übernommen werden sollen
+   * @param $filter Array mit werten die ï¿½bernommen werden sollen
    */
   private function createFilteredParams($bean,$filter)
   {
   	$params = array();
   	$props = get_object_vars($bean);
-  
+
   	foreach($props as $key => $value)
   	{
   		if(in_array($key,$filter))
-  		{	
+  		{
   		$method = "get".ucfirst($key);
   		if (method_exists($bean,$method))
   			$params[$key] = $bean->${method}();
@@ -305,7 +305,7 @@ class connector implements \hibiscus\iconnector
   	}
   	return $params;
   }
-  
+
   /**
    * Serialisiert einen Wert rekursiv nach XML-RPC.
    * @param $value der zu serialisierende Wert.
@@ -325,7 +325,7 @@ class connector implements \hibiscus\iconnector
     }
     return new \xmlrpcval($value,"string");
   }
-  
+
   /**
    * Deserialisiert rekursiv einen XML-RPC-Wert.
    * @param $value der zu deserialisierende Wert.
@@ -333,13 +333,13 @@ class connector implements \hibiscus\iconnector
   private function unserialize($value)
   {
     $type = $value->kindOf();
-    
+
     if (!$type)
       return $value;
-      
+
     if ($type == "scalar")
       return $value->scalarVal();
-      
+
     if ($type == "struct")
     {
       $values = array();
@@ -351,7 +351,7 @@ class connector implements \hibiscus\iconnector
       }
       return $values;
     }
-    
+
     if ($type == "array")
     {
       $values = array();
@@ -362,12 +362,12 @@ class connector implements \hibiscus\iconnector
       }
       return $values;
     }
-    
+
     return $value;
   }
-  
+
   /**
-   * 
+   *
    * @param unknown $typ
    * @param string $text
    * @param string $von
@@ -376,12 +376,12 @@ class connector implements \hibiscus\iconnector
   public function find($typ,$text=null,$von=null,$bis=null)
   {
   	$params = array();
-  	
+
   	$params[]=$text;
   	$params[]=$von;
   	$params[]=bis;
-  	
-  	
+
+
   	$value = $this->send("hibiscus.xmlrpc.".$typ.".find",array(new \xmlrpcval($text,"string"),new \xmlrpcval($von,"string"),new \xmlrpcval($bis,"string")));
   	$result = array();
   	for ($i=0;$i<$value->arraySize();$i++)
@@ -390,9 +390,9 @@ class connector implements \hibiscus\iconnector
   	array_push($result,$bean);
   	}
   	return $result;
-  	
+
   }
-  
+
   /**
    * @see hibiscus.iconnector::delete()
    */
@@ -411,7 +411,17 @@ class connector implements \hibiscus\iconnector
     $value = $this->send("hibiscus.xmlrpc.konto.calculateIBAN",array(new \xmlrpcval($blz,"string"), new \xmlrpcval($kontonummer,"string")) );
     return $this->unserialize($value);
   }
- 
+
+  public function getNextExecutionDate()
+  {
+    $value = $this->send("hibiscus.server.scheduler.getNextExecution");
+    return $this->unserialize($value);
+  }
+
+  public function execute()
+  {
+    return $this->send("hibiscus.server.execute.run");
+  }
 }
 
 ?>
